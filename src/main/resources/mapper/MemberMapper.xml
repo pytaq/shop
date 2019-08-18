@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.MemberMapper">
+
+    <resultMap id="BaseResultMap" type="com.hxzy.entity.Member">
+        <id column="openid" jdbcType="VARCHAR" property="openid" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="credit" jdbcType="INTEGER" property="credit" />
+        <result column="gold" jdbcType="DOUBLE" property="gold" />
+        <result column="realname" jdbcType="VARCHAR" property="realname" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+        <result column="createtime" jdbcType="INTEGER" property="createtime" />
+        <result column="istemplate" jdbcType="BIT" property="istemplate" />
+        <result column="status" jdbcType="BIT" property="status" />
+        <result column="experience" jdbcType="INTEGER" property="experience" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="outgold" jdbcType="DOUBLE" property="outgold" />
+        <result column="outgoldinfo" jdbcType="VARCHAR" property="outgoldinfo" />
+        <result column="weixin_openid" jdbcType="VARCHAR" property="weixinOpenid" />
+        <result column="alipay_openid" jdbcType="VARCHAR" property="alipayOpenid" />
+
+        <!--微信相关数据-->
+
+        <association property="wxfans" javaType="com.hxzy.entity.Wxfans">
+            <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+            <result column="wxAvator" jdbcType="VARCHAR" property="avatar" />
+            <result column="gender" jdbcType="BIT" property="gender" />
+        </association>
+
+
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.hxzy.entity.Member">
+        insert into member (openid, email, credit,
+                            gold, realname, mobile,
+                            pwd, createtime, istemplate,
+                            `status`, experience, avatar,
+                            outgold, outgoldinfo, weixin_openid,
+                            alipay_openid)
+        values (#{openid,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{credit,jdbcType=INTEGER},
+                #{gold,jdbcType=DOUBLE}, #{realname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+                #{pwd,jdbcType=VARCHAR}, #{createtime，jdbcType=INTEGER}, #{istemplate,jdbcType=BIT},
+                #{status,jdbcType=BIT}, #{experience,jdbcType=INTEGER}, #{avatar,jdbcType=VARCHAR},
+                #{outgold,jdbcType=DOUBLE}, #{outgoldinfo,jdbcType=VARCHAR}, #{weixinOpenid,jdbcType=VARCHAR},
+                #{alipayOpenid,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.hxzy.entity.Member">
+        update member
+        set email         = #{email,jdbcType=VARCHAR},
+            realname      = #{realname,jdbcType=VARCHAR},
+            mobile        = #{mobile,jdbcType=VARCHAR},
+            istemplate    = #{istemplate,jdbcType=BIT},
+            `status`      = #{status,jdbcType=BIT},
+            avatar        = #{avatar,jdbcType=VARCHAR},
+            weixin_openid = #{weixinOpenid,jdbcType=VARCHAR},
+            alipay_openid = #{alipayOpenid,jdbcType=VARCHAR}
+        where openid = #{openid,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.Member">
+        update member
+        <set>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="credit != null">
+                credit = #{credit,jdbcType=INTEGER},
+            </if>
+            <if test="gold != null">
+                gold = #{gold,jdbcType=DOUBLE},
+            </if>
+            <if test="realname != null">
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="pwd != null">
+                pwd = #{pwd,jdbcType=VARCHAR},
+            </if>
+            createtime =#{createtime，jdbcType=INTEGER},
+            <if test="istemplate != null">
+                istemplate = #{istemplate,jdbcType=BIT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=BIT},
+            </if>
+            <if test="experience != null">
+                experience = #{experience,jdbcType=INTEGER},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="outgold != null">
+                outgold = #{outgold,jdbcType=DOUBLE},
+            </if>
+            <if test="outgoldinfo != null">
+                outgoldinfo = #{outgoldinfo,jdbcType=VARCHAR},
+            </if>
+            <if test="weixinOpenid != null">
+                weixin_openid = #{weixinOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="alipayOpenid != null">
+                alipay_openid = #{alipayOpenid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where openid = #{openid,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findOne" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+        SELECT
+        m.email,m.credit,m.gold,m.openid,m.realname,m.pwd,m.createtime,m.istemplate,
+        m.`status`,m.experience,m.avatar,m.outgold,m.outgoldinfo,m.weixin_openid,m.alipay_openid,m.mobile,
+        wx.nickname,wx.avatar  as wxAvator,wx.gender
+       FROM
+            member AS m
+            LEFT JOIN weixin_wxfans AS wx ON m.openid = wx.openid
+           where  m.openid = #{openid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap" >
+        SELECT
+        m.email,m.credit,m.gold,m.openid,m.realname,m.pwd,m.createtime,m.istemplate,
+        m.`status`,m.experience,m.avatar,m.outgold,m.outgoldinfo,m.weixin_openid,m.alipay_openid,m.mobile,
+        wx.nickname,wx.avatar  as wxAvator,wx.gender
+       FROM
+            member AS m
+            LEFT JOIN weixin_wxfans AS wx ON m.openid = wx.openid
+    </select>
+
+    <select id="existsValue" parameterType="com.hxzy.entity.Member"
+            resultType="int">
+        select count(*) from member
+        <where>
+
+            <if test="email!=null and email!=''">
+                and email=#{email}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="search" parameterType="com.hxzy.vo.MenmberSearch" resultMap="BaseResultMap">
+        SELECT
+        m.email,m.credit,m.gold,m.openid,m.realname,m.pwd,m.createtime,m.istemplate,
+        m.`status`,m.experience,m.avatar,m.outgold,m.outgoldinfo,m.weixin_openid,m.alipay_openid,m.mobile,
+        wx.nickname,wx.avatar as wxAvator,wx.gender
+        FROM
+        member AS m
+        LEFT JOIN weixin_wxfans AS wx ON m.openid = wx.openid
+
+        <where>
+            <if test="email != null and email !='' ">
+                and m.email like concat(concat('%',#{email}),'%')
+            </if>
+
+            <if test="realname != null and realname !='' ">
+                and m.realname like concat(concat('%',#{realname}),'%')
+            </if>
+
+            <if test="mobile != null and mobile !='' ">
+                and m.mobile like concat(concat('%',#{mobile}),'%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

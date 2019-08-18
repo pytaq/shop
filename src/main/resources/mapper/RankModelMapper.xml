@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.RankModelMapper">
+    <resultMap id="BaseResultMap" type="com.hxzy.entity.RankModel">
+        <id column="rank_level" jdbcType="INTEGER" property="rankLevel" />
+        <result column="experience" jdbcType="INTEGER" property="experience" />
+        <result column="rank_name" jdbcType="VARCHAR" property="rankName" />
+    </resultMap>
+
+    <select id="findOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+            *
+        from rank_model
+        where rank_level = #{rankLevel,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.hxzy.entity.RankModel">
+        insert into rank_model (rank_level, experience, rank_name
+        )
+        values (#{rankLevel,jdbcType=INTEGER}, #{experience,jdbcType=INTEGER}, #{rankName,jdbcType=VARCHAR}
+               )
+    </insert>
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.RankModel">
+        update rank_model
+        <set>
+            <if test="experience != null">
+                experience = #{experience,jdbcType=INTEGER},
+            </if>
+            <if test="rankName != null">
+                rank_name = #{rankName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where rank_level = #{rankLevel,jdbcType=INTEGER}
+    </update>
+
+    <update id="update" parameterType="com.hxzy.entity.RankModel">
+        update rank_model
+        set experience = #{experience,jdbcType=INTEGER},
+            rank_name = #{rankName,jdbcType=VARCHAR}
+        where rank_level = #{rankLevel,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="findAll" resultType="com.hxzy.entity.RankModel">
+        select *
+        from rank_model
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.SysMenuMapper">
+
+
+    <select id="findOne" parameterType="java.lang.Integer" resultType="com.hxzy.entity.SysMenu">
+        select *
+        from sys_menu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <insert id="insert" parameterType="com.hxzy.entity.SysMenu">
+        insert into sys_menu (menuName, menuLevel,
+                              actionName, authority, sort,
+                              display, parentId, parentLevel)
+        values (#{menuName,jdbcType=VARCHAR}, #{menuLevel,jdbcType=INTEGER},
+                #{actionName,jdbcType=VARCHAR}, #{authority,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER},
+                #{display,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{parentLevel,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.SysMenu">
+        update sys_menu
+        <set>
+            <if test="menuName != null">
+                menuName = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuLevel != null">
+                menuLevel = #{menuLevel,jdbcType=INTEGER},
+            </if>
+            <if test="actionName != null">
+                actionName = #{actionName,jdbcType=VARCHAR},
+            </if>
+            <if test="authority != null">
+                authority = #{authority,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="display != null">
+                display = #{display,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                parentId = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="parentLevel != null">
+                parentLevel = #{parentLevel,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+
+    <update id="update" parameterType="com.hxzy.entity.SysMenu">
+        update sys_menu
+        set menuName = #{menuName,jdbcType=VARCHAR},
+            menuLevel = #{menuLevel,jdbcType=INTEGER},
+            actionName = #{actionName,jdbcType=VARCHAR},
+            authority = #{authority,jdbcType=VARCHAR},
+            sort = #{sort,jdbcType=INTEGER},
+            display = #{display,jdbcType=INTEGER},
+            parentId = #{parentId,jdbcType=INTEGER},
+            parentLevel = #{parentLevel,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+
+
+    <select id="search" parameterType="com.hxzy.entity.SysMenu" resultType="com.hxzy.entity.SysMenu">
+        select *
+        from sys_menu
+        <where>
+            <if test="menuName != null and menuName !='' ">
+                and menuName like concat(concat('%',#{menuName}),'%')
+            </if>
+        </where>
+    </select>
+
+
+    <select id="existsValue" parameterType="com.hxzy.entity.SysMenu"
+            resultType="int">
+        select count(*) from sys_menu
+        <where>
+            <if test="menuName!=null and menuName!=''">
+                and menuName=#{menuName}
+            </if>
+            <if test="parentId!=null and parentId!=''">
+                and parentId=#{parentId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAll" resultType="com.hxzy.entity.SysMenu">
+        select *
+        from sys_menu
+        order by  sys_menu.parentId , sys_menu.sort
+    </select>
+
+    <!-- 查询某个角色拥有的ID List<Integer> findOwnMenuId(Integer roleId) -->
+   <select id="findOwnMenuId" parameterType="int" resultType="int">
+       SELECT  menuId FROM sys_role_menu  where roleId=#{roleId}
+   </select>
+
+    <!-- 删除角色拥有菜单  int deleteAllRoleAuthority(int roleId) -->
+    <delete id="deleteAllRoleAuthority" parameterType="int">
+        delete from sys_role_menu where roleId=#{roleId}
+    </delete>
+
+    <!--批量新增菜单权限 int saveAuthority(@Param("roleId") int roleId, @Param("arrMenuIds") List<Integer> arrMenuIds)-->
+    <insert id="saveAuthority">
+        insert into sys_role_menu(roleId,menuId) values
+
+        <foreach collection="arrMenuIds" item="a" separator=",">
+            (#{roleId},#{a})
+        </foreach>
+
+    </insert>
+
+
+    <!-- 查询该 用户拥有的菜单-->
+    <select id="searchUserOwnMenu" parameterType="int" resultType="com.hxzy.entity.SysMenu">
+        SELECT
+              m.id,  m.menuName,  m.actionName,  m.authority,  m.parentId
+            FROM
+            `user` AS u
+            LEFT JOIN sys_role_user AS ru ON u.id = ru.userId
+            INNER JOIN sys_role_menu AS rm ON ru.roleId = rm.roleId
+            INNER JOIN sys_menu AS m ON rm.menuId = m.id
+            WHERE u.id =#{userId} and m.display=1
+            group by   m.id
+            order by m.parentId, m.sort
+
+
+    </select>
+
+</mapper>

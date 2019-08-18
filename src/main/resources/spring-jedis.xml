@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+   <!-- jedis类 redis.clients.jedis.Jedis ， redis.clients.jedis.JedisPool 连接池-->
+    <bean class="redis.clients.jedis.JedisPool" id="jedisPool" >
+        <constructor-arg name="host" value="120.27.241.234"></constructor-arg>
+        <constructor-arg name="port" value="6379"></constructor-arg>
+        <constructor-arg name="password" value="java34ban"></constructor-arg>
+        <constructor-arg name="timeout" value="3000"></constructor-arg>
+        <constructor-arg name="database" value="0"></constructor-arg>
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
+    </bean>
+
+    <bean class="redis.clients.jedis.JedisPoolConfig" id="jedisPoolConfig">
+        <property name="maxIdle" value="300" />
+        <property name="maxTotal" value="1000" />
+        <property name="testOnBorrow" value="false" />
+        <property name="blockWhenExhausted" value="false" />
+    </bean>
+
+
+   <!--redis.clients.jedis.JedisCluster 配置集群的-->
+</beans>

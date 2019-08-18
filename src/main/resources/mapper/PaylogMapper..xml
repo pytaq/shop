@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.PaylogMapper">
+        <resultMap id="BaseResultMap" type="com.hxzy.entity.Paylog">
+            <id column="id" jdbcType="INTEGER" property="id" />
+            <result column="paytype" jdbcType="VARCHAR" property="paytype" />
+            <result column="paymaney" jdbcType="VARCHAR" property="paymaney" />
+            <result column="ptype" jdbcType="VARCHAR" property="ptype" />
+            <result column="typename" jdbcType="VARCHAR" property="typename" />
+            <result column="pId" jdbcType="INTEGER" property="pId" />
+        </resultMap>
+
+
+    <select id="findAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        *
+        from  paylog
+
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from paylog
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hxzy.entity.Paylog">
+        insert into paylog ( paytype, paymaney,
+                            ptype, typename,
+        )
+        values (#{paytype,jdbcType=VARCHAR}, #{paymaney,jdbcType=VARCHAR},
+                #{ptype,jdbcType=VARCHAR}, #{typename,jdbcType=VARCHAR},
+               )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.hxzy.entity.Paylog">
+        insert into paylog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="paytype != null">
+                paytype,
+            </if>
+            <if test="paymaney != null">
+                paymaney,
+            </if>
+            <if test="ptype != null">
+                ptype,
+            </if>
+            <if test="typename != null">
+                typename,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="paytype != null">
+                #{paytype,jdbcType=VARCHAR},
+            </if>
+            <if test="paymaney != null">
+                #{paymaney,jdbcType=VARCHAR},
+            </if>
+            <if test="ptype != null">
+                #{ptype,jdbcType=VARCHAR},
+            </if>
+            <if test="typename != null">
+                #{typename,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hxzy.entity.Paylog">
+        update paylog
+        <set>
+            <if test="paytype != null">
+                paytype = #{paytype,jdbcType=VARCHAR},
+            </if>
+            <if test="paymaney != null">
+                paymaney = #{paymaney,jdbcType=VARCHAR},
+            </if>
+            <if test="ptype != null">
+                ptype = #{ptype,jdbcType=VARCHAR},
+            </if>
+            <if test="typename != null">
+                typename = #{typename,jdbcType=VARCHAR},
+            </if>
+            <if test="pId != null">
+                pId = #{pId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.hxzy.entity.Paylog">
+        update paylog
+        set paytype = #{paytype,jdbcType=VARCHAR},
+            paymaney = #{paymaney,jdbcType=VARCHAR},
+            ptype = #{ptype,jdbcType=VARCHAR},
+            typename = #{typename,jdbcType=VARCHAR},
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

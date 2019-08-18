@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.ShopCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.hxzy.entity.ShopCategory">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="commission" jdbcType="INTEGER" property="commission"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="thumb" jdbcType="VARCHAR" property="thumb"/>
+        <result column="thumbadv" jdbcType="VARCHAR" property="thumbadv"/>
+        <result column="thumbadvurl" jdbcType="VARCHAR" property="thumbadvurl"/>
+        <result column="parentid" jdbcType="INTEGER" property="parentid"/>
+        <result column="isrecommand" jdbcType="INTEGER" property="isrecommand"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="displayorder" jdbcType="TINYINT" property="displayorder"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="enabled" jdbcType="BIT" property="enabled"/>
+    </resultMap>
+
+    <select id="findOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+            *
+        from shop_category
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.hxzy.entity.ShopCategory" keyProperty="id">
+         insert into shop_category (commission, `name`,
+          thumb, thumbadv, thumbadvurl,
+          parentid, isrecommand, description,
+          displayorder, deleted, enabled
+          )
+        values ( #{commission,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+          #{thumb,jdbcType=VARCHAR}, #{thumbadv,jdbcType=VARCHAR}, #{thumbadvurl,jdbcType=VARCHAR},
+          #{parentid,jdbcType=INTEGER}, #{isrecommand,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR},
+          #{displayorder,jdbcType=TINYINT}, #{deleted,jdbcType=BIT}, #{enabled,jdbcType=BIT}
+          )
+    </insert>
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.ShopCategory">
+        update shop_category
+        <set>
+            <if test="commission != null">
+                commission = #{commission,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="thumb != null">
+                thumb = #{thumb,jdbcType=VARCHAR},
+            </if>
+            <if test="thumbadv != null">
+                thumbadv = #{thumbadv,jdbcType=VARCHAR},
+            </if>
+            <if test="thumbadvurl != null">
+                thumbadvurl = #{thumbadvurl,jdbcType=VARCHAR},
+            </if>
+            <if test="parentid != null">
+                parentid = #{parentid,jdbcType=INTEGER},
+            </if>
+            <if test="isrecommand != null">
+                isrecommand = #{isrecommand,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="displayorder != null">
+                displayorder = #{displayorder,jdbcType=TINYINT},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="update" parameterType="com.hxzy.entity.ShopCategory">
+        update shop_category
+        set commission   = #{commission,jdbcType=INTEGER},
+            `name`       = #{name,jdbcType=VARCHAR},
+            thumb        = #{thumb,jdbcType=VARCHAR},
+            thumbadv     = #{thumbadv,jdbcType=VARCHAR},
+            thumbadvurl  = #{thumbadvurl,jdbcType=VARCHAR},
+            parentid     = #{parentid,jdbcType=INTEGER},
+            isrecommand  = #{isrecommand,jdbcType=INTEGER},
+            description  = #{description,jdbcType=VARCHAR},
+            displayorder = #{displayorder,jdbcType=TINYINT},
+            deleted      = #{deleted,jdbcType=BIT},
+            enabled      = #{enabled,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findAll" resultType="com.hxzy.entity.ShopCategory">
+        select *
+        from shop_category
+    </select>
+
+    <select id="existsValue" parameterType="com.hxzy.entity.ShopCategory"
+            resultType="int">
+        select count(*) from shop_category
+        <where>
+            <if test="name!=null and name!=''">
+                and `name`=#{name}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="search" parameterType="com.hxzy.vo.PageSearch" resultType="com.hxzy.entity.ShopCategory">
+        select *
+        from shop_category
+
+    </select>
+
+    <select id="searchByParentId" parameterType="int" resultType="com.hxzy.entity.ShopCategory">
+        select id,name
+        from shop_category
+        where deleted=1  and parentid=#{pid}
+        order by id
+    </select>
+
+</mapper>

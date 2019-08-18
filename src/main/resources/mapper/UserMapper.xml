@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.UserMapper">
+
+
+    <insert id="insert" parameterType="com.hxzy.entity.User">
+        insert into user ( createtime, `password`, username,salt)
+        values (#{createtime,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+                #{username,jdbcType=VARCHAR},#{salt,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.hxzy.entity.User">
+        update user
+        set
+            `password` = #{password,jdbcType=VARCHAR},
+            username = #{username,jdbcType=VARCHAR},
+            salt = #{salt,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.User">
+        update user
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findOne" parameterType="java.lang.Integer" resultType="com.hxzy.entity.User">
+        select *
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="search" parameterType="com.hxzy.vo.UserSearch" resultType="com.hxzy.entity.User">
+        select *
+        from user
+        <where>
+            <if test="username != null and username !='' ">
+                and username like concat(concat('%',#{username}),'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="existsValue" parameterType="com.hxzy.entity.User"
+            resultType="int">
+        select count(*) from user
+        <where>
+            <if test="username!=null and username!=''">
+                and username=#{username}
+            </if>
+        </where>
+    </select>
+
+
+    <!--拥有该用色权限的用户 List<User> findOwnUser(int roleId) -->
+    <select id="findOwnUser" parameterType="int" resultType="com.hxzy.entity.User">
+           SELECT u.id, u.username
+            FROM  `user` AS u
+            INNER JOIN sys_role_user AS sr ON u.id = sr.userId
+            where sr.roleId=#{roleId}
+    </select>
+
+    <!--没有分配该角色的用户-->
+   <select id="findNoOwnUser" parameterType="int" resultType="com.hxzy.entity.User">
+       SELECT u.id, u.username
+        FROM `user` AS u
+        where   not exists (
+           select  sr.userId  from  sys_role_user sr where  sr.roleId=#{roleId} and  u.id=sr.userId
+        )
+   </select>
+
+
+    <!--移出该角色拥有的用户ID int deleteOwnUserId(@Param("userId") int userId,@Param("roleId") int roleId) -->
+    <delete id="deleteOwnUserId"  >
+        delete from sys_role_user
+        where  userId=#{userId}  and roleId=#{roleId}
+    </delete>
+
+    <!-- 为该用色添加用户int insertOwnUserId(@Param("userId") int userId,@Param("roleId") int roleId) -->
+    <insert id="insertOwnUserId" >
+        insert into sys_role_user(userId,roleId) values(#{userId},#{roleId})
+    </insert>
+
+    <!--  User login(String userName);-->
+    <select id="login" parameterType="java.lang.String" resultType="com.hxzy.entity.User">
+        select * from user
+        where username=#{userName}
+    </select>
+
+    <!--Set<String> findUserOwnRoleAuthority(int id); 根据用户名查询它有角色权限 -->
+    <select id="findUserOwnRoleAuthority" parameterType="int" resultType="java.lang.String">
+
+        SELECT     r.authority
+        FROM
+            sys_role AS r
+           INNER JOIN sys_role_user AS sr ON sr.roleId = r.id
+        where r.state=1 and sr.userId=#{id}
+    </select>
+
+
+    <!-- Set<String> findUserOwnMenuAuthority(int id); 根据用户角色拥有的权限 -->
+    <select id="findUserOwnMenuAuthority" parameterType="int" resultType="java.lang.String">
+      SELECT DISTINCT m.authority
+        FROM
+        sys_role AS r
+        INNER JOIN sys_role_user AS sr ON sr.roleId = r.id
+        INNER JOIN sys_role_menu AS srm ON r.id = srm.roleId
+        INNER JOIN sys_menu AS m ON srm.menuId = m.id
+        WHERE
+        r.state = 1 AND sr.userId = #{id}  and m.authority is not null
+    </select>
+
+
+</mapper>

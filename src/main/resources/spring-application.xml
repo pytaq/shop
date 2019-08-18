@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- 1、读取外面的 properties-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+
+    <!-- 1、扫包-->
+    <context:component-scan base-package="com.hxzy.service,com.hxzy.common"></context:component-scan>
+
+    <!--2、开注解spring IoC中的@autowird注解-->
+    <context:annotation-config></context:annotation-config>
+
+    <!--3、开启aop注解  proxy-target-class="true"，强制使用CBLIG代理，默认是java动态代理-->
+    <aop:aspectj-autoproxy  ></aop:aspectj-autoproxy>
+
+    <!--5、使用事务注解 aop-->
+    <tx:annotation-driven></tx:annotation-driven>
+
+
+    <!--6、数据库连接池 https://docs.spring.io/spring/docs/4.3.24.RELEASE/spring-framework-reference/html/transaction.html#transaction-strategies -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <!--7、jdbc事务类-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 8、mybatis的配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 配置数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 读取mybatis的配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!-- 读取映射文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+        <!-- 别名的设置 -->
+        <property name="typeAliasesPackage" value="com.hxzy.entity"></property>
+    </bean>
+
+    <!--9、Mybatis生成Mapper代理对象 -->
+    <bean  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- sqlSessionFactory的指定 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <!-- 数据访问层的包 -->
+        <property name="basePackage" value="com.hxzy.mapper"></property>
+    </bean>
+
+
+    <!-- 引用文件-->
+    <import resource="classpath:spring-jedis.xml"></import>
+    <import resource="classpath:spring-shiro.xml"></import>
+
+</beans>

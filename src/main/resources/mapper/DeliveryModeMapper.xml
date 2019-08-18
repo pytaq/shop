@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hxzy.mapper.DeliveryModeMapper">
+
+  <resultMap id="BaseResultMap" type="com.hxzy.entity.DeliveryMode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="deliveryexplain" jdbcType="VARCHAR" property="deliveryexplain" />
+    <result column="deliveryfee" jdbcType="DOUBLE" property="deliveryfee" />
+  </resultMap>
+
+  <select id="findOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from delivery_mode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from delivery_mode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hxzy.entity.DeliveryMode" useGeneratedKeys="true">
+    insert into delivery_mode (deliveryexplain, deliveryfee)
+    values (#{deliveryexplain,jdbcType=VARCHAR}, #{deliveryfee,jdbcType=DOUBLE})
+  </insert>
+
+  <select id="existsValue" parameterType="com.hxzy.entity.DeliveryMode" resultType="int">
+    select count(*)
+    from delivery_mode
+    <where>
+      <if test="deliveryexplain !=null and deliveryexplain !=''">
+        and deliveryexplain=#{deliveryexplain}
+      </if>
+    </where>
+  </select>
+
+
+  <update id="update" parameterType="com.hxzy.entity.DeliveryMode">
+    update delivery_mode
+    set deliveryexplain = #{deliveryexplain,jdbcType=VARCHAR},
+        deliveryfee = #{deliveryfee,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="search" parameterType="com.hxzy.vo.DeliverySearch" resultType="com.hxzy.entity.DeliveryMode">
+    select *
+    from delivery_mode
+    <where>
+      <if test="deliveryexplain != null and deliveryexplain !='' ">
+        and deliveryexplain like concat(concat('%',#{deliveryexplain}),'%')
+      </if>
+    </where>
+  </select>
+
+</mapper>

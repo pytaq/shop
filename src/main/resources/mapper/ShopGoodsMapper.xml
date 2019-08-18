@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxzy.mapper.ShopGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.hxzy.entity.ShopGoods">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <id column="goodssn" jdbcType="VARCHAR" property="goodssn" />
+        <result column="pcate" jdbcType="INTEGER" property="pcate" />
+        <result column="ccate" jdbcType="INTEGER" property="ccate" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="status" jdbcType="BIT" property="status" />
+        <result column="displayorder" jdbcType="INTEGER" property="displayorder" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="thumb" jdbcType="VARCHAR" property="thumb" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="weight" jdbcType="DECIMAL" property="weight" />
+        <result column="productsn" jdbcType="VARCHAR" property="productsn" />
+        <result column="marketprice" jdbcType="DECIMAL" property="marketprice" />
+        <result column="productprice" jdbcType="DECIMAL" property="productprice" />
+        <result column="total" jdbcType="INTEGER" property="total" />
+        <result column="totalcnf" jdbcType="INTEGER" property="totalcnf" />
+        <result column="sales" jdbcType="INTEGER" property="sales" />
+        <result column="createtime" jdbcType="INTEGER" property="createtime" />
+        <result column="credit" jdbcType="INTEGER" property="credit" />
+        <result column="hasoption" jdbcType="INTEGER" property="hasoption" />
+        <result column="isnew" jdbcType="INTEGER" property="isnew" />
+        <result column="issendfree" jdbcType="INTEGER" property="issendfree" />
+        <result column="ishot" jdbcType="INTEGER" property="ishot" />
+        <result column="isdiscount" jdbcType="INTEGER" property="isdiscount" />
+        <result column="isrecommand" jdbcType="INTEGER" property="isrecommand" />
+        <result column="istime" jdbcType="INTEGER" property="istime" />
+        <result column="timestart" jdbcType="INTEGER" property="timestart" />
+        <result column="timeend" jdbcType="INTEGER" property="timeend" />
+        <result column="viewcount" jdbcType="INTEGER" property="viewcount" />
+        <result column="deleted" jdbcType="TINYINT" property="deleted" />
+        <result column="isfirst" jdbcType="INTEGER" property="isfirst" />
+        <result column="isjingping" jdbcType="INTEGER" property="isjingping" />
+        <result column="isverify" jdbcType="INTEGER" property="isverify" />
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    </resultMap>
+
+
+
+    <select id="findOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+            *
+        from shop_goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertSelective"  parameterType="com.hxzy.entity.ShopGoods" >
+        insert into shop_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodssn != null">
+                goodssn,
+            </if>
+            <if test="pcate != null">
+                pcate,
+            </if>
+            <if test="ccate != null">
+                ccate,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="displayorder != null">
+                displayorder,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="thumb != null">
+                thumb,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="productsn != null">
+                productsn,
+            </if>
+            <if test="marketprice != null">
+                marketprice,
+            </if>
+            <if test="productprice != null">
+                productprice,
+            </if>
+            <if test="total != null">
+                total,
+            </if>
+            <if test="totalcnf != null">
+                totalcnf,
+            </if>
+            <if test="sales != null">
+                sales,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="credit != null">
+                credit,
+            </if>
+            <if test="hasoption != null">
+                hasoption,
+            </if>
+            <if test="isnew != null">
+                isnew,
+            </if>
+            <if test="issendfree != null">
+                issendfree,
+            </if>
+            <if test="ishot != null">
+                ishot,
+            </if>
+            <if test="isdiscount != null">
+                isdiscount,
+            </if>
+            <if test="isrecommand != null">
+                isrecommand,
+            </if>
+            <if test="istime != null">
+                istime,
+            </if>
+            <if test="timestart != null">
+                timestart,
+            </if>
+            <if test="timeend != null">
+                timeend,
+            </if>
+            <if test="viewcount != null">
+                viewcount,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="isfirst != null">
+                isfirst,
+            </if>
+            <if test="isjingping != null">
+                isjingping,
+            </if>
+            <if test="isverify != null">
+                isverify,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodssn != null">
+                #{goodssn,jdbcType=VARCHAR},
+            </if>
+            <if test="pcate != null">
+                #{pcate,jdbcType=INTEGER},
+            </if>
+            <if test="ccate != null">
+                #{ccate,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BIT},
+            </if>
+            <if test="displayorder != null">
+                #{displayorder,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="thumb != null">
+                #{thumb,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="productsn != null">
+                #{productsn,jdbcType=VARCHAR},
+            </if>
+            <if test="marketprice != null">
+                #{marketprice,jdbcType=DECIMAL},
+            </if>
+            <if test="productprice != null">
+                #{productprice,jdbcType=DECIMAL},
+            </if>
+            <if test="total != null">
+                #{total,jdbcType=INTEGER},
+            </if>
+            <if test="totalcnf != null">
+                #{totalcnf,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null">
+                #{sales,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=INTEGER},
+            </if>
+            <if test="credit != null">
+                #{credit,jdbcType=INTEGER},
+            </if>
+            <if test="hasoption != null">
+                #{hasoption,jdbcType=INTEGER},
+            </if>
+            <if test="isnew != null">
+                #{isnew,jdbcType=INTEGER},
+            </if>
+            <if test="issendfree != null">
+                #{issendfree,jdbcType=INTEGER},
+            </if>
+            <if test="ishot != null">
+                #{ishot,jdbcType=INTEGER},
+            </if>
+            <if test="isdiscount != null">
+                #{isdiscount,jdbcType=INTEGER},
+            </if>
+            <if test="isrecommand != null">
+                #{isrecommand,jdbcType=INTEGER},
+            </if>
+            <if test="istime != null">
+                #{istime,jdbcType=INTEGER},
+            </if>
+            <if test="timestart != null">
+                #{timestart,jdbcType=INTEGER},
+            </if>
+            <if test="timeend != null">
+                #{timeend,jdbcType=INTEGER},
+            </if>
+            <if test="viewcount != null">
+                #{viewcount,jdbcType=INTEGER},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="isfirst != null">
+                #{isfirst,jdbcType=INTEGER},
+            </if>
+            <if test="isjingping != null">
+                #{isjingping,jdbcType=INTEGER},
+            </if>
+            <if test="isverify != null">
+                #{isverify,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+
+    <insert id="insert" parameterType="com.hxzy.entity.ShopGoods">
+        insert into shop_goods (goodssn, pcate,
+                                ccate, `type`, `status`, displayorder,
+                                title, thumb, description,
+                                weight, productsn, marketprice,
+                                productprice, total, totalcnf,
+                                sales, createtime, credit,
+                                hasoption, isnew, issendfree,
+                                ishot, isdiscount, isrecommand,
+                                istime, timestart, timeend,
+                                viewcount, deleted, isfirst,
+                                isjingping, isverify, content,
+                                remark)
+        values ( #{goodssn,jdbcType=VARCHAR}, #{pcate,jdbcType=INTEGER},
+                #{ccate,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{status,jdbcType=BIT}, #{displayorder,jdbcType=INTEGER},
+                #{title,jdbcType=VARCHAR}, #{thumb,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+                #{weight,jdbcType=DECIMAL}, #{productsn,jdbcType=VARCHAR}, #{marketprice,jdbcType=DECIMAL},
+                #{productprice,jdbcType=DECIMAL}, #{total,jdbcType=INTEGER}, #{totalcnf,jdbcType=INTEGER},
+                #{sales,jdbcType=INTEGER}, #{createtime,jdbcType=INTEGER}, #{credit,jdbcType=INTEGER},
+                #{hasoption,jdbcType=INTEGER}, #{isnew,jdbcType=INTEGER}, #{issendfree,jdbcType=INTEGER},
+                #{ishot,jdbcType=INTEGER}, #{isdiscount,jdbcType=INTEGER}, #{isrecommand,jdbcType=INTEGER},
+                #{istime,jdbcType=INTEGER}, #{timestart,jdbcType=INTEGER}, #{timeend,jdbcType=INTEGER},
+                #{viewcount,jdbcType=INTEGER}, #{deleted,jdbcType=TINYINT}, #{isfirst,jdbcType=INTEGER},
+                #{isjingping,jdbcType=INTEGER}, #{isverify,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR},
+                #{remark,jdbcType=LONGVARCHAR})
+    </insert>
+
+
+
+
+    <update id="updateSelective" parameterType="com.hxzy.entity.ShopGoods">
+        update shop_goods
+        <set>
+            <if test="pcate != null">
+                pcate = #{pcate,jdbcType=INTEGER},
+            </if>
+            <if test="ccate != null">
+                ccate = #{ccate,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                `type` = #{type,jdbcType=BIT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=BIT},
+            </if>
+            <if test="displayorder != null">
+                displayorder = #{displayorder,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="thumb != null">
+                thumb = #{thumb,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="productsn != null">
+                productsn = #{productsn,jdbcType=VARCHAR},
+            </if>
+            <if test="marketprice != null">
+                marketprice = #{marketprice,jdbcType=DECIMAL},
+            </if>
+            <if test="productprice != null">
+                productprice = #{productprice,jdbcType=DECIMAL},
+            </if>
+            <if test="total != null">
+                total = #{total,jdbcType=INTEGER},
+            </if>
+            <if test="totalcnf != null">
+                totalcnf = #{totalcnf,jdbcType=INTEGER},
+            </if>
+            <if test="sales != null">
+                sales = #{sales,jdbcType=INTEGER},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=INTEGER},
+            </if>
+            <if test="credit != null">
+                credit = #{credit,jdbcType=INTEGER},
+            </if>
+            <if test="hasoption != null">
+                hasoption = #{hasoption,jdbcType=INTEGER},
+            </if>
+            <if test="isnew != null">
+                isnew = #{isnew,jdbcType=INTEGER},
+            </if>
+            <if test="issendfree != null">
+                issendfree = #{issendfree,jdbcType=INTEGER},
+            </if>
+            <if test="ishot != null">
+                ishot = #{ishot,jdbcType=INTEGER},
+            </if>
+            <if test="isdiscount != null">
+                isdiscount = #{isdiscount,jdbcType=INTEGER},
+            </if>
+            <if test="isrecommand != null">
+                isrecommand = #{isrecommand,jdbcType=INTEGER},
+            </if>
+            <if test="istime != null">
+                istime = #{istime,jdbcType=INTEGER},
+            </if>
+            <if test="timestart != null">
+                timestart = #{timestart,jdbcType=INTEGER},
+            </if>
+            <if test="timeend != null">
+                timeend = #{timeend,jdbcType=INTEGER},
+            </if>
+            <if test="viewcount != null">
+                viewcount = #{viewcount,jdbcType=INTEGER},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="isfirst != null">
+                isfirst = #{isfirst,jdbcType=INTEGER},
+            </if>
+            <if test="isjingping != null">
+                isjingping = #{isjingping,jdbcType=INTEGER},
+            </if>
+            <if test="isverify != null">
+                isverify = #{isverify,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="update" parameterType="com.hxzy.entity.ShopGoods">
+        update shop_goods
+        set pcate = #{pcate,jdbcType=INTEGER},
+            ccate = #{ccate,jdbcType=INTEGER},
+            `type` = #{type,jdbcType=INTEGER},
+            `status` = #{status,jdbcType=BIT},
+            displayorder = #{displayorder,jdbcType=INTEGER},
+            title = #{title,jdbcType=VARCHAR},
+            thumb = #{thumb,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            weight = #{weight,jdbcType=DECIMAL},
+            productsn = #{productsn,jdbcType=VARCHAR},
+            marketprice = #{marketprice,jdbcType=DECIMAL},
+            productprice = #{productprice,jdbcType=DECIMAL},
+            total = #{total,jdbcType=INTEGER},
+            totalcnf = #{totalcnf,jdbcType=INTEGER},
+            sales = #{sales,jdbcType=INTEGER},
+            createtime = #{createtime,jdbcType=INTEGER},
+            credit = #{credit,jdbcType=INTEGER},
+            hasoption = #{hasoption,jdbcType=INTEGER},
+            isnew = #{isnew,jdbcType=INTEGER},
+            issendfree = #{issendfree,jdbcType=INTEGER},
+            ishot = #{ishot,jdbcType=INTEGER},
+            isdiscount = #{isdiscount,jdbcType=INTEGER},
+            isrecommand = #{isrecommand,jdbcType=INTEGER},
+            istime = #{istime,jdbcType=INTEGER},
+            timestart = #{timestart,jdbcType=INTEGER},
+            timeend = #{timeend,jdbcType=INTEGER},
+            viewcount = #{viewcount,jdbcType=INTEGER},
+            deleted = #{deleted,jdbcType=TINYINT},
+            isfirst = #{isfirst,jdbcType=INTEGER},
+            isjingping = #{isjingping,jdbcType=INTEGER},
+            isverify = #{isverify,jdbcType=INTEGER},
+            content = #{content,jdbcType=LONGVARCHAR},
+            remark = #{remark,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findAll" resultType="com.hxzy.entity.ShopCategory">
+        select *
+        from shop_goods
+    </select>
+
+    <select id="existsValue" parameterType="com.hxzy.entity.ShopGoods" resultType="int">
+
+        select count(*) from  shop_goods
+        <where>
+            <if test=" title!=null and title!=''">
+                and title=#{title}
+            </if>
+            <if test="goodssn!=null and goodssn!=''">
+                and  goodssn=#{goodssn}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="search" parameterType="com.hxzy.vo.ShopGoodsSearch"  resultMap="BaseResultMap">
+        select *
+        from  shop_goods
+        <where>
+            <if test="title != null and title !='' ">
+                and title like concat(concat('%',#{title}),'%')
+            </if>
+
+            <if test="status != null and status !='' ">
+                and status=#{status}
+            </if>
+
+        </where>
+
+
+    </select>
+
+
+
+
+
+
+</mapper>
